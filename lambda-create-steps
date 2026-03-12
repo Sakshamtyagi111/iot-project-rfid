@@ -1,0 +1,14 @@
+Step 1: Create the Lambda Function
+Go to the AWS Lambda Console.
+
+Click Create function.
+
+Choose Author from scratch.
+
+Function name: AttendanceCalculator.
+
+Runtime: Select Python 3.12 (or the latest 3.x).
+
+Permissions: Click "Change default execution role" and select Use an existing role. Pick the role you just added the policy to.
+
+Click Create function.
