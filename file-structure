@@ -1,0 +1,14 @@
+# iot-project-rfid
+
+attendance-system/
+├── hardware/
+│   └── esp32_firmware.ino       # Arduino C++ code
+├── infra/                       # Terraform code
+│   ├── main.tf                  # Provider and VPC
+│   ├── aurora.tf                # Aurora Serverless Database
+│   └── eks.tf                   # Kubernetes Cluster
+├── k8s/                         # Kubernetes manifests
+│   ├── deployment.yaml
+│   ├── service.yaml
+│   └── hpa.yaml
+└── frontend/                    # React/Next.js app
