@@ -16,3 +16,14 @@ The Device Proves Its Identity: AWS then demands your device's ID. Your ESP32 se
 The Cryptographic Test: Anyone could copy a public certificate. So, AWS sends a complex math puzzle to the ESP32. The ESP32 can only solve this puzzle if it possesses the hidden deviceKey (the Private Key).
 The Tunnel Opens: Once the ESP32 solves the puzzle, AWS is satisfied. A secure, encrypted tunnel is opened on Port 8883, and your JSON payload is allowed to flow into the cloud.
 When architecting secure cloud infrastructure, locking down edge devices with mTLS over Port 8883 is the industry standard. It ensures that only your specific, physical hardware can write data to your backend.
+
+
+JSON PAYLOAD IN AWS WILL LOOK LIKE THIS ON SCANNING:-
+
+{
+  "student_id": "A1B2XXXXX",
+  "course": "BCA",
+  "semester": 6,
+  "location": "----",
+  "timestamp": 1741808653
+}
