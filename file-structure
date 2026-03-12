@@ -1,14 +1,36 @@
-# iot-project-rfid
+[ hardware/ ]
+      |
+      |-- SmartScanner.ino (Logic)  ------> [ Physical RFID Card ]
+      |-- aws_network.h    (WiFi)           (Student Taps Card)
+      |-- secrets.h        (Certs)
+      |
+      v
+[ AWS IoT Core ] <------------------------- (Secure MQTT Publish)
+      |
+      v
+[ DynamoDB Table ] <----------------------- (IoT Rule saves scan)
 
-attendance-system/
-├── hardware/
-│   └── esp32_firmware.ino       # Arduino C++ code
-├── infra/                       # Terraform code
-│   ├── main.tf                  # Provider and VPC
-│   ├── aurora.tf                # Aurora Serverless Database
-│   └── eks.tf                   # Kubernetes Cluster
-├── k8s/                         # Kubernetes manifests
-│   ├── deployment.yaml
-│   ├── service.yaml
-│   └── hpa.yaml
-└── frontend/                    # React/Next.js app
+----------------------------------------------------------------------------------------------------------------------------
+[ backend/ ]
+      |
+      |-- calculator_lambda.py
+      |
+      v
+[ AWS Lambda ] <--------------------------- (Triggered by API)
+      |
+      |-----> [ Queries DynamoDB ]
+      |             |
+      |<------------| (Returns Count of Scans)
+      |
+      v
+[ Math: (Scans / Total) * 100 ] ----------> (Returns JSON Result)
+------------------------------------------------------------------------------------------------------------------------------
+[ frontend/ ]
+      |
+      |-- index.html (HTML + CSS + JS)
+      |
+      v
+[ AWS Amplify ] <-------------------------- (Hosts your website URL)
+      ^
+      |
+[ Student Browser ] <--- (User enters UID) ---> [ Amazon API Gateway ]
