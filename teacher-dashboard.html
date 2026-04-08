@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Dashboard — AttendRFID</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard nav-teacher">
+<div class="bg-grid"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-header">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 40 40" fill="none"><rect x="4" y="4" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/><rect x="22" y="4" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/><rect x="4" y="22" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/><circle cx="29" cy="29" r="5" fill="var(--accent)"/><circle cx="29" cy="29" r="2" fill="var(--bg)"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">AttendRFID</div>
+        <div class="brand-sub">TEACHER PORTAL</div>
+      </div>
+    </div>
+  </div>
+  <div class="sidebar-user">
+    <div class="user-avatar avatar-teacher" id="avatarInitials">AS</div>
+    <div class="user-info">
+      <div class="user-name" id="sidebarName">Dr. Anil Sharma</div>
+      <div class="user-role" id="sidebarSubject">Physics · PHY101</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" onclick="showPage('overview', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Overview
+    </div>
+    <div class="nav-section">Attendance</div>
+    <div class="nav-item" onclick="showPage('daily', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Daily Attendance
+    </div>
+    <div class="nav-item" onclick="showPage('hourly', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      Hourly Records
+    </div>
+    <div class="nav-item" onclick="showPage('students', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      All Students
+    </div>
+    <div class="nav-item" onclick="showPage('reports', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 17v-2m3 2v-4m3 4v-6M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+      Reports
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="logout()">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+      Sign Out
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content">
+  <button class="mobile-nav-toggle" onclick="toggleSidebar()">☰ Menu</button>
+
+  <!-- OVERVIEW PAGE -->
+  <div class="page active" id="page-overview">
+    <div class="page-header">
+      <h1>Good Morning, <span id="teacherNameHeader">Dr. Sharma</span> 👋</h1>
+      <p id="subjectBadgeHeader">Teaching <strong>Physics (PHY101)</strong> — Your attendance data is isolated and secure.</p>
+    </div>
+    <div class="alert alert-info" style="margin-bottom:20px;">
+      🔐 You can only see attendance data for your subject. Other subjects are not accessible.
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card stat-blue">
+        <div class="stat-label">Today's Present</div>
+        <div class="stat-value" id="ov-present">38</div>
+        <div class="stat-sub">out of 45 enrolled</div>
+      </div>
+      <div class="stat-card stat-red">
+        <div class="stat-label">Today's Absent</div>
+        <div class="stat-value" id="ov-absent">7</div>
+        <div class="stat-sub">need attention</div>
+      </div>
+      <div class="stat-card stat-green">
+        <div class="stat-label">Today's Rate</div>
+        <div class="stat-value" id="ov-rate">84%</div>
+        <div class="stat-sub">attendance percentage</div>
+      </div>
+      <div class="stat-card stat-yellow">
+        <div class="stat-label">Classes Today</div>
+        <div class="stat-value" id="ov-classes">4</div>
+        <div class="stat-sub">periods conducted</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <div class="card-header"><h3>Today's Attendance Summary — <span id="ov-date"></span></h3></div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table" id="overview-table">
+            <thead><tr><th>#</th><th>Student Name</th><th>Roll No</th><th>RFID Tag</th><th>Status</th><th>Entry Time</th></tr></thead>
+            <tbody id="overview-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAILY PAGE -->
+  <div class="page" id="page-daily">
+    <div class="page-header">
+      <h1>Daily Attendance</h1>
+      <p>Filter attendance records by date for your subject</p>
+    </div>
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label>Select Date</label>
+        <input type="date" class="filter-control" id="daily-date">
+      </div>
+      <div class="filter-group">
+        <label>Status Filter</label>
+        <select class="filter-control" id="daily-status">
+          <option value="all">All Students</option>
+          <option value="present">Present Only</option>
+          <option value="absent">Absent Only</option>
+        </select>
+      </div>
+      <button class="btn-filter" onclick="filterDaily()">Apply Filter</button>
+    </div>
+    <div class="content-card">
+      <div class="card-header">
+        <div><h3 id="daily-card-title">Attendance Records</h3><p id="daily-card-sub">Select a date and apply filter</p></div>
+        <div class="subject-select-info" id="daily-subject-tag">PHY101 — Physics</div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Student Name</th><th>Roll No</th><th>Status</th><th>Entry Time</th><th>Exit Time</th></tr></thead>
+            <tbody id="daily-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOURLY PAGE -->
+  <div class="page" id="page-hourly">
+    <div class="page-header">
+      <h1>Hourly Records</h1>
+      <p>View student attendance broken down by each class period/hour</p>
+    </div>
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label>Select Date</label>
+        <input type="date" class="filter-control" id="hourly-date">
+      </div>
+      <div class="filter-group">
+        <label>Select Student</label>
+        <select class="filter-control" id="hourly-student">
+          <option value="all">All Students</option>
+        </select>
+      </div>
+      <button class="btn-filter" onclick="loadHourly()">Load Records</button>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3>Hourly Attendance Breakdown</h3><p>Each block = 1 class period</p></div>
+      <div class="card-body">
+        <div id="hourly-content">
+          <div class="table-responsive">
+            <table class="data-table" id="hourly-table">
+              <thead><tr><th>Student</th><th>Roll No</th><th>Period 1<br><small>8–9AM</small></th><th>Period 2<br><small>9–10AM</small></th><th>Period 3<br><small>10–11AM</small></th><th>Period 4<br><small>11–12PM</small></th><th>Period 5<br><small>1–2PM</small></th><th>Period 6<br><small>2–3PM</small></th><th>Total</th></tr></thead>
+              <tbody id="hourly-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENTS PAGE -->
+  <div class="page" id="page-students">
+    <div class="page-header">
+      <h1>All Students</h1>
+      <p>Enrolled students in your subject with semester attendance overview</p>
+    </div>
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label>Search Student</label>
+        <div class="search-input-wrap">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3)"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="filter-control search-input" id="student-search" placeholder="Name or roll no..." oninput="filterStudents()" style="padding-left:36px;">
+        </div>
+      </div>
+      <div class="filter-group">
+        <label>Attendance Status</label>
+        <select class="filter-control" id="student-filter">
+          <option value="all">All</option>
+          <option value="low">Below 75% (At Risk)</option>
+          <option value="good">75% and above</option>
+        </select>
+      </div>
+      <button class="btn-filter" onclick="filterStudents()">Filter</button>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3>Student Roster — <span id="student-count-label">45 students</span></h3></div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Student Name</th><th>Roll No</th><th>Semester %</th><th>Classes Attended</th><th>Total Classes</th><th>Status</th></tr></thead>
+            <tbody id="students-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REPORTS PAGE -->
+  <div class="page" id="page-reports">
+    <div class="page-header">
+      <h1>Reports</h1>
+      <p>Monthly and weekly attendance trends for your subject</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card stat-blue"><div class="stat-label">Semester Avg</div><div class="stat-value">81%</div><div class="stat-sub">overall attendance</div></div>
+      <div class="stat-card stat-red"><div class="stat-label">At Risk Students</div><div class="stat-value" id="at-risk-count">5</div><div class="stat-sub">below 75%</div></div>
+      <div class="stat-card stat-green"><div class="stat-label">Best Day</div><div class="stat-value">96%</div><div class="stat-sub">Jan 15</div></div>
+      <div class="stat-card stat-yellow"><div class="stat-label">Total Classes</div><div class="stat-value">48</div><div class="stat-sub">this semester</div></div>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3>At-Risk Students (Below 75%)</h3></div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Name</th><th>Roll No</th><th>Attendance %</th><th>Classes Missed</th><th>Risk Level</th></tr></thead>
+            <tbody id="risk-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3>Monthly Attendance Trend</h3></div>
+      <div class="card-body" id="monthly-trend"></div>
+    </div>
+  </div>
+
+</main>
+
+<script src="data.js"></script>
+<script>
+  // Auth check
+  const teacherData = JSON.parse(sessionStorage.getItem('teacherData') || 'null');
+  if (!teacherData) window.location.href = 'teacher-login.html';
+
+  // Populate teacher info
+  document.getElementById('sidebarName').textContent = teacherData.name;
+  document.getElementById('sidebarSubject').textContent = teacherData.subject + ' · ' + teacherData.subjectCode;
+  document.getElementById('avatarInitials').textContent = teacherData.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('teacherNameHeader').textContent = 'Dr./Prof. ' + teacherData.name.split(' ').pop();
+  document.getElementById('subjectBadgeHeader').innerHTML = `Teaching <strong>${teacherData.subject} (${teacherData.subjectCode})</strong> — Your attendance data is isolated and secure.`;
+  document.getElementById('daily-subject-tag').textContent = teacherData.subjectCode + ' — ' + teacherData.subject;
+
+  // Date defaults
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('daily-date').value = today;
+  document.getElementById('hourly-date').value = today;
+  document.getElementById('ov-date').textContent = new Date().toLocaleDateString('en-IN', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+
+  function showPage(name, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    el.classList.add('active');
+    if (name === 'students') renderStudents();
+    if (name === 'overview') renderOverview();
+    if (name === 'reports') renderReports();
+    if (name === 'hourly') renderHourlyTable();
+  }
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+
+  function logout() {
+    sessionStorage.clear();
+    window.location.href = 'index.html';
+  }
+
+  // ---- OVERVIEW ----
+  function renderOverview() {
+    const students = getStudentsForSubject(teacherData.subjectCode);
+    const tbody = document.getElementById('overview-tbody');
+    tbody.innerHTML = '';
+    let presentCount = 0;
+    students.forEach((s, i) => {
+      const status = s.todayStatus;
+      if (status === 'Present') presentCount++;
+      tbody.innerHTML += `<tr>
+        <td>${i+1}</td><td>${s.name}</td><td>${s.rollNo}</td>
+        <td style="font-family:var(--mono);font-size:0.78rem;color:var(--text3)">${s.rfid}</td>
+        <td><span class="badge badge-${status.toLowerCase()}">${status}</span></td>
+        <td style="font-family:var(--mono);font-size:0.82rem">${status==='Present' ? s.entryTime : '—'}</td>
+      </tr>`;
+    });
+    document.getElementById('ov-present').textContent = presentCount;
+    document.getElementById('ov-absent').textContent = students.length - presentCount;
+    document.getElementById('ov-rate').textContent = Math.round((presentCount/students.length)*100) + '%';
+  }
+
+  // ---- DAILY ----
+  function filterDaily() {
+    const date = document.getElementById('daily-date').value;
+    const statusFilter = document.getElementById('daily-status').value;
+    const students = getStudentsForSubject(teacherData.subjectCode);
+    const tbody = document.getElementById('daily-tbody');
+    tbody.innerHTML = '';
+    document.getElementById('daily-card-title').textContent = `Attendance — ${new Date(date).toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long'})}`;
+    document.getElementById('daily-card-sub').textContent = `${students.length} students enrolled · ${teacherData.subject}`;
+    let count = 0;
+    students.forEach((s, i) => {
+      const status = getDailyStatus(s, date);
+      if (statusFilter !== 'all' && status.toLowerCase() !== statusFilter) return;
+      count++;
+      tbody.innerHTML += `<tr>
+        <td>${count}</td><td>${s.name}</td><td>${s.rollNo}</td>
+        <td><span class="badge badge-${status.toLowerCase()}">${status}</span></td>
+        <td style="font-family:var(--mono);font-size:0.82rem">${status==='Present' ? randomTime(8,9) : '—'}</td>
+        <td style="font-family:var(--mono);font-size:0.82rem">${status==='Present' ? randomTime(14,15) : '—'}</td>
+      </tr>`;
+    });
+    if (!count) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:24px;">No records found for selected filters</td></tr>';
+  }
+
+  // ---- HOURLY ----
+  function renderHourlyTable() {
+    const students = getStudentsForSubject(teacherData.subjectCode);
+    const sel = document.getElementById('hourly-student');
+    sel.innerHTML = '<option value="all">All Students</option>';
+    students.forEach(s => sel.innerHTML += `<option value="${s.rollNo}">${s.name}</option>`);
+    loadHourly();
+  }
+
+  function loadHourly() {
+    const students = getStudentsForSubject(teacherData.subjectCode);
+    const filter = document.getElementById('hourly-student').value;
+    const tbody = document.getElementById('hourly-tbody');
+    tbody.innerHTML = '';
+    const list = filter === 'all' ? students : students.filter(s => s.rollNo === filter);
+    list.forEach(s => {
+      const periods = generatePeriods(s);
+      const total = periods.filter(p=>p).length;
+      tbody.innerHTML += `<tr>
+        <td>${s.name}</td><td style="font-family:var(--mono);font-size:0.78rem">${s.rollNo}</td>
+        ${periods.map(p => `<td><span class="badge badge-${p?'present':'absent'}">${p?'P':'A'}</span></td>`).join('')}
+        <td><strong style="color:${total>=4?'var(--green)':'var(--red)'}">${total}/6</strong></td>
+      </tr>`;
+    });
+  }
+
+  // ---- STUDENTS ----
+  function renderStudents() {
+    const students = getStudentsForSubject(teacherData.subjectCode);
+    renderStudentTable(students);
+    document.getElementById('student-count-label').textContent = students.length + ' students';
+  }
+
+  function renderStudentTable(students) {
+    const tbody = document.getElementById('students-tbody');
+    tbody.innerHTML = '';
+    students.forEach((s, i) => {
+      const pct = s.semesterPct;
+      const color = pct >= 75 ? 'var(--green)' : pct >= 60 ? 'var(--yellow)' : 'var(--red)';
+      const status = pct >= 75 ? 'Good' : pct >= 60 ? 'At Risk' : 'Critical';
+      const badgeClass = pct >= 75 ? 'present' : pct >= 60 ? 'late' : 'absent';
+      tbody.innerHTML += `<tr>
+        <td>${i+1}</td><td>${s.name}</td>
+        <td style="font-family:var(--mono);font-size:0.82rem">${s.rollNo}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div class="progress-wrap" style="flex:1;max-width:80px;"><div class="progress-bar ${pct>=75?'progress-green':pct>=60?'progress-yellow':'progress-red'}" style="width:${pct}%"></div></div>
+            <span style="font-family:var(--mono);font-size:0.8rem;color:${color}">${pct}%</span>
+          </div>
+        </td>
+        <td style="font-family:var(--mono)">${s.classesAttended}</td>
+        <td style="font-family:var(--mono)">${s.totalClasses}</td>
+        <td><span class="badge badge-${badgeClass}">${status}</span></td>
+      </tr>`;
+    });
+  }
+
+  function filterStudents() {
+    const search = document.getElementById('student-search').value.toLowerCase();
+    const filter = document.getElementById('student-filter').value;
+    let students = getStudentsForSubject(teacherData.subjectCode);
+    if (search) students = students.filter(s => s.name.toLowerCase().includes(search) || s.rollNo.toLowerCase().includes(search));
+    if (filter === 'low') students = students.filter(s => s.semesterPct < 75);
+    if (filter === 'good') students = students.filter(s => s.semesterPct >= 75);
+    document.getElementById('student-count-label').textContent = students.length + ' students';
+    renderStudentTable(students);
+  }
+
+  // ---- REPORTS ----
+  function renderReports() {
+    const students = getStudentsForSubject(teacherData.subjectCode);
+    const atRisk = students.filter(s => s.semesterPct < 75);
+    document.getElementById('at-risk-count').textContent = atRisk.length;
+    const riskTbody = document.getElementById('risk-tbody');
+    riskTbody.innerHTML = '';
+    atRisk.forEach((s, i) => {
+      const missed = s.totalClasses - s.classesAttended;
+      const level = s.semesterPct < 60 ? 'Critical' : 'Warning';
+      riskTbody.innerHTML += `<tr>
+        <td>${i+1}</td><td>${s.name}</td>
+        <td style="font-family:var(--mono);font-size:0.82rem">${s.rollNo}</td>
+        <td><span style="color:${s.semesterPct<60?'var(--red)':'var(--yellow)'};font-family:var(--mono);font-weight:700">${s.semesterPct}%</span></td>
+        <td style="font-family:var(--mono)">${missed}</td>
+        <td><span class="badge badge-${s.semesterPct<60?'absent':'late'}">${level}</span></td>
+      </tr>`;
+    });
+
+    // Monthly trend bars
+    const months = ['Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+    const pcts = [88,82,79,85,78,81,76,83];
+    const trend = document.getElementById('monthly-trend');
+    trend.innerHTML = '<div style="display:flex;gap:12px;align-items:flex-end;height:120px;padding-bottom:8px;">' +
+      months.map((m, i) => `
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="font-size:0.72rem;font-family:var(--mono);color:var(--text3)">${pcts[i]}%</div>
+          <div style="flex:1;width:100%;display:flex;align-items:flex-end;">
+            <div style="width:100%;background:${pcts[i]>=80?'var(--green)':pcts[i]>=75?'var(--yellow)':'var(--red)'};height:${pcts[i]}%;border-radius:4px 4px 0 0;opacity:0.8;"></div>
+          </div>
+          <div style="font-size:0.72rem;color:var(--text3)">${m}</div>
+        </div>`).join('') + '</div>';
+  }
+
+  // Init
+  renderOverview();
+
+  // Helpers
+  function randomTime(start, end) {
+    const h = start + Math.floor(Math.random()*(end-start));
+    const m = Math.floor(Math.random()*60).toString().padStart(2,'0');
+    return `${h.toString().padStart(2,'0')}:${m}`;
+  }
+  function getDailyStatus(student, date) {
+    const seed = student.rollNo.charCodeAt(student.rollNo.length-1) + new Date(date).getDate();
+    return seed % 5 === 0 ? 'Absent' : 'Present';
+  }
+  function generatePeriods(student) {
+    const seed = student.rollNo.charCodeAt(student.rollNo.length-1);
+    return [1,2,3,4,5,6].map(p => ((seed + p) % 5) !== 0);
+  }
+</script>
+</body>
+</html>

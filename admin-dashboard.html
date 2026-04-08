@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — AttendRFID</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard nav-admin">
+<div class="bg-grid"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-header">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 40 40" fill="none"><rect x="4" y="4" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/><rect x="22" y="4" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/><rect x="4" y="22" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/><circle cx="29" cy="29" r="5" fill="var(--accent)"/><circle cx="29" cy="29" r="2" fill="var(--bg)"/></svg>
+      </div>
+      <div><div class="brand-name">AttendRFID</div><div class="brand-sub">ADMIN PANEL</div></div>
+    </div>
+  </div>
+  <div class="sidebar-user">
+    <div class="user-avatar avatar-admin">AD</div>
+    <div class="user-info">
+      <div class="user-name">System Admin</div>
+      <div class="user-role">Full Access · All Data</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Dashboard</div>
+    <div class="nav-item active" onclick="showPage('overview', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Overview
+    </div>
+    <div class="nav-section">Records</div>
+    <div class="nav-item" onclick="showPage('attendance', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Attendance Records
+    </div>
+    <div class="nav-section">User Management</div>
+    <div class="nav-item" onclick="showPage('teachers', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 4.354a4 4 0 110 5.292"/><path d="M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197"/></svg>
+      Manage Teachers
+    </div>
+    <div class="nav-item" onclick="showPage('students', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      Manage Students
+    </div>
+    <div class="nav-section">System</div>
+    <div class="nav-item" onclick="showPage('config', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      System Config
+    </div>
+    <div class="nav-item" onclick="showPage('suggestions', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      Student Feedback
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="logout()">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+      Sign Out
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content">
+  <button class="mobile-nav-toggle" onclick="toggleSidebar()">☰ Menu</button>
+
+  <!-- OVERVIEW -->
+  <div class="page active" id="page-overview">
+    <div class="page-header">
+      <h1>Admin Overview</h1>
+      <p>Full system snapshot — all subjects, all students, live data</p>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card stat-blue"><div class="stat-label">Total Students</div><div class="stat-value" id="total-students">15</div><div class="stat-sub">enrolled this semester</div></div>
+      <div class="stat-card stat-green"><div class="stat-label">Total Teachers</div><div class="stat-value">5</div><div class="stat-sub">active faculty</div></div>
+      <div class="stat-card stat-yellow"><div class="stat-label">Today's Overall</div><div class="stat-value" id="today-overall">73%</div><div class="stat-sub">attendance rate</div></div>
+      <div class="stat-card stat-red"><div class="stat-label">At-Risk Students</div><div class="stat-value" id="at-risk-total">4</div><div class="stat-sub">below 75% overall</div></div>
+    </div>
+
+    <div class="content-card">
+      <div class="card-header"><h3>Today's Attendance — All Subjects</h3><p id="admin-today-date"></p></div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>Subject</th><th>Teacher</th><th>Present</th><th>Absent</th><th>Rate</th><th>Status</th></tr></thead>
+            <tbody id="subject-summary-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <div class="card-header"><h3>All Students — Today's Status</h3></div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Name</th><th>Roll No</th><th>RFID</th><th>Today</th><th>Sem %</th><th>Entry Time</th></tr></thead>
+            <tbody id="admin-all-students-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTENDANCE RECORDS -->
+  <div class="page" id="page-attendance">
+    <div class="page-header">
+      <h1>Attendance Records</h1>
+      <p>View and edit all attendance entries across subjects and dates</p>
+    </div>
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label>Subject</label>
+        <select class="filter-control" id="att-subject">
+          <option value="all">All Subjects</option>
+          <option value="PHY101">Physics (PHY101)</option>
+          <option value="MAT201">Mathematics (MAT201)</option>
+          <option value="CHE101">Chemistry (CHE101)</option>
+          <option value="CS301">Computer Science (CS301)</option>
+          <option value="ENG401">English (ENG401)</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Date</label>
+        <input type="date" class="filter-control" id="att-date">
+      </div>
+      <div class="filter-group">
+        <label>Status</label>
+        <select class="filter-control" id="att-status">
+          <option value="all">All</option>
+          <option value="Present">Present</option>
+          <option value="Absent">Absent</option>
+        </select>
+      </div>
+      <button class="btn-filter" onclick="filterAttendance()">Search</button>
+    </div>
+    <div class="content-card">
+      <div class="card-header">
+        <h3>Records</h3>
+        <button class="btn-success action-btn" onclick="openAddAttendance()">+ Add Entry</button>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Student</th><th>Roll No</th><th>Subject</th><th>Date</th><th>Status</th><th>Time</th><th>Actions</th></tr></thead>
+            <tbody id="att-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANAGE TEACHERS -->
+  <div class="page" id="page-teachers">
+    <div class="page-header">
+      <h1>Manage Teachers</h1>
+      <p>Add, edit, or revoke teacher access to the system</p>
+    </div>
+    <div class="content-card">
+      <div class="card-header">
+        <h3>Teacher List</h3>
+        <button class="btn-success action-btn" onclick="openAddTeacher()">+ Add Teacher</button>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Name</th><th>ID</th><th>Subject</th><th>Department</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="teachers-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MANAGE STUDENTS -->
+  <div class="page" id="page-students">
+    <div class="page-header">
+      <h1>Manage Students</h1>
+      <p>View, edit, or revoke student portal access</p>
+    </div>
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label>Search</label>
+        <div class="search-input-wrap">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3)"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" class="filter-control search-input" id="admin-student-search" placeholder="Name, roll no..." oninput="renderAdminStudents()" style="padding-left:36px;">
+        </div>
+      </div>
+      <button class="btn-success action-btn" onclick="openAddStudent()" style="margin-top:auto">+ Add Student</button>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3 id="admin-student-count">15 Students</h3></div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>#</th><th>Name</th><th>Roll No</th><th>RFID Tag</th><th>Sem %</th><th>Portal Access</th><th>Actions</th></tr></thead>
+            <tbody id="admin-students-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYSTEM CONFIG -->
+  <div class="page" id="page-config">
+    <div class="page-header">
+      <h1>System Configuration</h1>
+      <p>Set period durations, dates, academic calendar and system settings</p>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3>Period Settings</h3></div>
+      <div class="card-body">
+        <div class="system-config-grid">
+          <div class="config-item"><label>Period Duration (minutes)</label><div class="config-value" id="cfg-duration">60</div></div>
+          <div class="config-item"><label>Periods Per Day</label><div class="config-value" id="cfg-periods">6</div></div>
+          <div class="config-item"><label>Minimum Attendance %</label><div class="config-value" id="cfg-min">75%</div></div>
+          <div class="config-item"><label>Working Days</label><div class="config-value" id="cfg-days" style="font-size:0.9rem">Mon–Fri</div></div>
+        </div>
+        <div style="margin-top:20px;display:flex;flex-direction:column;gap:14px;">
+          <div class="form-row">
+            <div>
+              <label class="form-label">Period Duration (min)</label>
+              <input type="number" class="form-input" id="input-duration" value="60" min="30" max="120">
+            </div>
+            <div>
+              <label class="form-label">Periods Per Day</label>
+              <input type="number" class="form-input" id="input-periods" value="6" min="1" max="10">
+            </div>
+          </div>
+          <div class="form-row">
+            <div>
+              <label class="form-label">Minimum Attendance %</label>
+              <input type="number" class="form-input" id="input-min" value="75" min="50" max="100">
+            </div>
+            <div>
+              <label class="form-label">Day Start Time</label>
+              <input type="time" class="form-input" id="input-start" value="08:00">
+            </div>
+          </div>
+          <button class="btn-save" style="width:fit-content" onclick="saveConfig()">Save Period Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <div class="card-header"><h3>Academic Calendar</h3></div>
+      <div class="card-body">
+        <div class="form-row" style="margin-bottom:14px">
+          <div><label class="form-label">Semester Start Date</label><input type="date" class="form-input" id="sem-start" value="2025-01-06"></div>
+          <div><label class="form-label">Semester End Date</label><input type="date" class="form-input" id="sem-end" value="2025-05-30"></div>
+        </div>
+        <div style="margin-bottom:14px">
+          <label class="form-label">Edit / Override Attendance Entry</label>
+          <div class="form-row">
+            <input type="date" class="form-input" id="edit-date" placeholder="Select date">
+            <select class="form-input" id="edit-student-sel">
+              <option value="">Select student...</option>
+            </select>
+          </div>
+          <div class="form-row" style="margin-top:10px">
+            <select class="form-input" id="edit-subject-sel">
+              <option value="">Select subject...</option>
+              <option value="PHY101">Physics (PHY101)</option>
+              <option value="MAT201">Mathematics (MAT201)</option>
+              <option value="CHE101">Chemistry (CHE101)</option>
+              <option value="CS301">Computer Science (CS301)</option>
+              <option value="ENG401">English (ENG401)</option>
+            </select>
+            <select class="form-input" id="edit-status-sel">
+              <option value="Present">Mark Present</option>
+              <option value="Absent">Mark Absent</option>
+            </select>
+          </div>
+          <button class="btn-warning action-btn" style="margin-top:12px" onclick="overrideAttendance()">Override Attendance Record</button>
+          <div id="override-success" style="display:none;margin-top:10px" class="alert alert-info">✓ Attendance record updated successfully.</div>
+        </div>
+        <button class="btn-save" style="width:fit-content" onclick="saveSemDates()">Save Academic Calendar</button>
+        <div id="sem-saved" style="display:none;margin-top:10px" class="alert alert-info">✓ Academic calendar saved.</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <div class="card-header"><h3>System Status</h3></div>
+      <div class="card-body">
+        <div class="system-config-grid">
+          <div class="config-item" style="display:flex;justify-content:space-between;align-items:center">
+            <div><label style="color:var(--text2);font-size:0.83rem;font-weight:500">RFID Reader</label><div style="font-size:0.75rem;color:var(--text3)">ESP32 Module</div></div>
+            <span class="badge badge-present">Online</span>
+          </div>
+          <div class="config-item" style="display:flex;justify-content:space-between;align-items:center">
+            <div><label style="color:var(--text2);font-size:0.83rem;font-weight:500">AWS Sync</label><div style="font-size:0.75rem;color:var(--text3)">Cloud connection</div></div>
+            <span class="badge badge-present">Connected</span>
+          </div>
+          <div class="config-item" style="display:flex;justify-content:space-between;align-items:center">
+            <div><label style="color:var(--text2);font-size:0.83rem;font-weight:500">Auto Backup</label><div style="font-size:0.75rem;color:var(--text3)">Daily at midnight</div></div>
+            <label class="toggle-switch"><input type="checkbox" checked id="backup-toggle"><span class="toggle-slider"></span></label>
+          </div>
+          <div class="config-item" style="display:flex;justify-content:space-between;align-items:center">
+            <div><label style="color:var(--text2);font-size:0.83rem;font-weight:500">Email Alerts</label><div style="font-size:0.75rem;color:var(--text3)">Low attendance notify</div></div>
+            <label class="toggle-switch"><input type="checkbox" checked id="email-toggle"><span class="toggle-slider"></span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENT FEEDBACK -->
+  <div class="page" id="page-suggestions">
+    <div class="page-header">
+      <h1>Student Feedback</h1>
+      <p>All suggestions and feedback submitted by students</p>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3>Received Suggestions</h3></div>
+      <div class="card-body">
+        <div id="admin-suggestions-list">
+          <div style="padding:24px;text-align:center;color:var(--text3)">No suggestions yet. Students can submit them from their portal.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-teacher">
+  <div class="modal">
+    <div class="modal-header"><h3 id="teacher-modal-title">Add Teacher</h3><button class="modal-close" onclick="closeModal('modal-teacher')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div><label class="form-label">Full Name</label><input type="text" class="form-input" id="tm-name" placeholder="Dr. First Last"></div>
+        <div><label class="form-label">Employee ID</label><input type="text" class="form-input" id="tm-id" placeholder="TCH-2024-XXX"></div>
+      </div>
+      <div class="form-row" style="margin-top:12px">
+        <div><label class="form-label">Subject</label><input type="text" class="form-input" id="tm-subject" placeholder="e.g. Physics"></div>
+        <div><label class="form-label">Subject Code</label><input type="text" class="form-input" id="tm-code" placeholder="e.g. PHY101"></div>
+      </div>
+      <div class="form-row" style="margin-top:12px">
+        <div><label class="form-label">Email</label><input type="email" class="form-input" id="tm-email" placeholder="teacher@college.edu"></div>
+        <div><label class="form-label">Department</label><input type="text" class="form-input" id="tm-dept" placeholder="e.g. Science"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('modal-teacher')">Cancel</button>
+      <button class="btn-save" onclick="saveTeacher()">Save Teacher</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-student">
+  <div class="modal">
+    <div class="modal-header"><h3 id="student-modal-title">Add Student</h3><button class="modal-close" onclick="closeModal('modal-student')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div><label class="form-label">Full Name</label><input type="text" class="form-input" id="sm-name" placeholder="Student Name"></div>
+        <div><label class="form-label">Roll Number</label><input type="text" class="form-input" id="sm-roll" placeholder="2024-CS-XXX"></div>
+      </div>
+      <div class="form-row" style="margin-top:12px">
+        <div><label class="form-label">RFID Tag ID</label><input type="text" class="form-input" id="sm-rfid" placeholder="RF-XXXXXX"></div>
+        <div><label class="form-label">Branch</label><input type="text" class="form-input" id="sm-branch" placeholder="e.g. CSE"></div>
+      </div>
+      <div class="form-row" style="margin-top:12px">
+        <div><label class="form-label">Semester</label><select class="form-input" id="sm-sem"><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option><option>8</option></select></div>
+        <div><label class="form-label">Portal Access</label><select class="form-input" id="sm-access"><option value="Active">Active</option><option value="Inactive">Inactive</option></select></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('modal-student')">Cancel</button>
+      <button class="btn-save" onclick="saveStudent()">Save Student</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+  if (!sessionStorage.getItem('isAdmin')) window.location.href = 'admin-login.html';
+
+  let teachers = JSON.parse(JSON.stringify(TEACHER_LIST));
+  let students = JSON.parse(JSON.stringify(ALL_STUDENTS));
+  let editingTeacherIdx = null, editingStudentIdx = null;
+
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('att-date').value = today;
+  document.getElementById('edit-date').value = today;
+  document.getElementById('admin-today-date').textContent = new Date().toLocaleDateString('en-IN', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+
+  // Populate student dropdown in config
+  function populateEditStudents() {
+    const sel = document.getElementById('edit-student-sel');
+    sel.innerHTML = '<option value="">Select student...</option>';
+    students.forEach(s => sel.innerHTML += `<option value="${s.id}">${s.name} (${s.rollNo})</option>`);
+  }
+  populateEditStudents();
+
+  function showPage(name, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    el.classList.add('active');
+    if (name === 'overview') renderOverview();
+    if (name === 'teachers') renderTeachers();
+    if (name === 'students') renderAdminStudents();
+    if (name === 'attendance') filterAttendance();
+    if (name === 'suggestions') renderAdminSuggestions();
+    if (name === 'config') { document.getElementById('total-students').textContent = students.length; }
+  }
+
+  // OVERVIEW
+  function renderOverview() {
+    document.getElementById('total-students').textContent = students.length;
+    const atRisk = students.filter(s => s.semesterPct < 75).length;
+    document.getElementById('at-risk-total').textContent = atRisk;
+    const presentCount = students.filter(s => s.todayStatus === 'Present').length;
+    document.getElementById('today-overall').textContent = Math.round(presentCount/students.length*100) + '%';
+
+    // Subject summary
+    const subjects = [
+      {code:'PHY101',name:'Physics',teacher:'Dr. Anil Sharma'},
+      {code:'MAT201',name:'Mathematics',teacher:'Prof. Meena Gupta'},
+      {code:'CHE101',name:'Chemistry',teacher:'Dr. Raj Verma'},
+      {code:'CS301',name:'Comp. Science',teacher:'Prof. Anu Singh'},
+      {code:'ENG401',name:'English',teacher:'Dr. Priti Kapoor'},
+    ];
+    const tbody = document.getElementById('subject-summary-tbody');
+    tbody.innerHTML = '';
+    subjects.forEach(sub => {
+      const total = students.length;
+      const present = students.filter(s => s.todayStatus === 'Present').length - Math.floor(Math.random()*3);
+      const rate = Math.round(present/total*100);
+      tbody.innerHTML += `<tr>
+        <td>${sub.name} <span style="font-family:var(--mono);font-size:0.72rem;color:var(--text3)">(${sub.code})</span></td>
+        <td>${sub.teacher}</td>
+        <td style="color:var(--green);font-family:var(--mono)">${present}</td>
+        <td style="color:var(--red);font-family:var(--mono)">${total-present}</td>
+        <td style="font-family:var(--mono)">${rate}%</td>
+        <td><span class="badge badge-${rate>=75?'present':'absent'}">${rate>=75?'Good':'Low'}</span></td>
+      </tr>`;
+    });
+
+    // All students
+    const allTbody = document.getElementById('admin-all-students-tbody');
+    allTbody.innerHTML = '';
+    students.forEach((s, i) => {
+      const pct = s.semesterPct;
+      allTbody.innerHTML += `<tr>
+        <td>${i+1}</td><td>${s.name}</td>
+        <td style="font-family:var(--mono);font-size:0.8rem">${s.rollNo}</td>
+        <td style="font-family:var(--mono);font-size:0.75rem;color:var(--text3)">${s.rfid}</td>
+        <td><span class="badge badge-${s.todayStatus.toLowerCase()}">${s.todayStatus}</span></td>
+        <td><span style="color:${pct>=75?'var(--green)':pct>=60?'var(--yellow)':'var(--red)'};font-family:var(--mono)">${pct}%</span></td>
+        <td style="font-family:var(--mono);font-size:0.8rem">${s.todayStatus==='Present'?s.entryTime:'—'}</td>
+      </tr>`;
+    });
+  }
+  renderOverview();
+
+  // ATTENDANCE
+  function filterAttendance() {
+    const subj = document.getElementById('att-subject').value;
+    const status = document.getElementById('att-status').value;
+    const tbody = document.getElementById('att-tbody');
+    tbody.innerHTML = '';
+    let count = 0;
+    const subjects = subj === 'all' ? ['PHY101','MAT201','CHE101','CS301','ENG401'] : [subj];
+    students.forEach(s => {
+      subjects.forEach(sub => {
+        const st = ((s.rollNo.charCodeAt(s.rollNo.length-1) + sub.charCodeAt(0)) % 5 === 0) ? 'Absent' : 'Present';
+        if (status !== 'all' && st !== status) return;
+        count++;
+        tbody.innerHTML += `<tr>
+          <td>${count}</td><td>${s.name}</td>
+          <td style="font-family:var(--mono);font-size:0.8rem">${s.rollNo}</td>
+          <td style="font-family:var(--mono);font-size:0.8rem">${sub}</td>
+          <td style="font-family:var(--mono);font-size:0.8rem">${document.getElementById('att-date').value}</td>
+          <td><span class="badge badge-${st.toLowerCase()}">${st}</span></td>
+          <td style="font-family:var(--mono);font-size:0.8rem">${st==='Present'?'0'+Math.floor(Math.random()*2+8)+':'+(Math.floor(Math.random()*30)).toString().padStart(2,'0'):'—'}</td>
+          <td><div class="btn-group">
+            <button class="action-btn btn-edit" onclick="editRecord('${s.rollNo}','${sub}')">Edit</button>
+            <button class="action-btn btn-danger" onclick="if(confirm('Delete this record?')){this.closest('tr').remove()}">Delete</button>
+          </div></td>
+        </tr>`;
+      });
+    });
+    if (!count) tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:24px">No records found</td></tr>';
+  }
+
+  function editRecord(roll, sub) {
+    alert(`Edit record for ${roll} — ${sub}\n(In production: opens edit modal with RFID timestamp data from AWS)`);
+  }
+  function openAddAttendance() {
+    alert('Add Attendance Entry:\n(In production: opens form to manually add attendance with date, student, subject, time)');
+  }
+
+  // TEACHERS
+  function renderTeachers() {
+    const tbody = document.getElementById('teachers-tbody');
+    tbody.innerHTML = '';
+    teachers.forEach((t, i) => {
+      tbody.innerHTML += `<tr>
+        <td>${i+1}</td><td>${t.name}</td>
+        <td style="font-family:var(--mono);font-size:0.8rem;color:var(--text3)">${t.id}</td>
+        <td>${t.subject}</td><td>${t.department}</td>
+        <td><span class="badge badge-${t.status==='Active'?'present':'absent'}">${t.status}</span></td>
+        <td><div class="btn-group">
+          <button class="action-btn btn-edit" onclick="editTeacher(${i})">Edit</button>
+          <button class="action-btn btn-${t.status==='Active'?'warning':'success'}" onclick="toggleTeacher(${i})">${t.status==='Active'?'Deactivate':'Activate'}</button>
+          <button class="action-btn btn-danger" onclick="removeTeacher(${i})">Remove</button>
+        </div></td>
+      </tr>`;
+    });
+  }
+
+  function openAddTeacher() {
+    editingTeacherIdx = null;
+    document.getElementById('teacher-modal-title').textContent = 'Add Teacher';
+    ['tm-name','tm-id','tm-subject','tm-code','tm-email','tm-dept'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('modal-teacher').classList.add('open');
+  }
+  function editTeacher(i) {
+    editingTeacherIdx = i;
+    const t = teachers[i];
+    document.getElementById('teacher-modal-title').textContent = 'Edit Teacher';
+    document.getElementById('tm-name').value = t.name;
+    document.getElementById('tm-id').value = t.id;
+    document.getElementById('tm-subject').value = t.subject;
+    document.getElementById('tm-code').value = t.subjectCode;
+    document.getElementById('tm-email').value = t.email;
+    document.getElementById('tm-dept').value = t.department;
+    document.getElementById('modal-teacher').classList.add('open');
+  }
+  function saveTeacher() {
+    const t = {
+      name: document.getElementById('tm-name').value,
+      id: document.getElementById('tm-id').value,
+      subject: document.getElementById('tm-subject').value,
+      subjectCode: document.getElementById('tm-code').value,
+      email: document.getElementById('tm-email').value,
+      department: document.getElementById('tm-dept').value,
+      status: 'Active', joinDate: today,
+    };
+    if (!t.name || !t.id) { alert('Name and ID required'); return; }
+    if (editingTeacherIdx !== null) teachers[editingTeacherIdx] = t;
+    else teachers.push(t);
+    closeModal('modal-teacher');
+    renderTeachers();
+  }
+  function toggleTeacher(i) {
+    teachers[i].status = teachers[i].status === 'Active' ? 'Inactive' : 'Active';
+    renderTeachers();
+  }
+  function removeTeacher(i) {
+    if (confirm(`Remove ${teachers[i].name}? They will lose all system access.`)) {
+      teachers.splice(i, 1);
+      renderTeachers();
+    }
+  }
+
+  // STUDENTS
+  function renderAdminStudents() {
+    const search = (document.getElementById('admin-student-search')?.value || '').toLowerCase();
+    const list = search ? students.filter(s => s.name.toLowerCase().includes(search) || s.rollNo.toLowerCase().includes(search)) : students;
+    document.getElementById('admin-student-count').textContent = list.length + ' Students';
+    const tbody = document.getElementById('admin-students-tbody');
+    tbody.innerHTML = '';
+    list.forEach((s, i) => {
+      const realIdx = students.indexOf(s);
+      tbody.innerHTML += `<tr>
+        <td>${i+1}</td><td>${s.name}</td>
+        <td style="font-family:var(--mono);font-size:0.8rem">${s.rollNo}</td>
+        <td style="font-family:var(--mono);font-size:0.75rem;color:var(--text3)">${s.rfid}</td>
+        <td><span style="font-family:var(--mono);color:${s.semesterPct>=75?'var(--green)':'var(--red)'}">${s.semesterPct}%</span></td>
+        <td><span class="badge badge-present">Active</span></td>
+        <td><div class="btn-group">
+          <button class="action-btn btn-edit" onclick="editStudentModal(${realIdx})">Edit</button>
+          <button class="action-btn btn-danger" onclick="removeStudent(${realIdx})">Remove</button>
+        </div></td>
+      </tr>`;
+    });
+  }
+  renderAdminStudents();
+
+  function openAddStudent() {
+    editingStudentIdx = null;
+    document.getElementById('student-modal-title').textContent = 'Add Student';
+    ['sm-name','sm-roll','sm-rfid','sm-branch'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('modal-student').classList.add('open');
+  }
+  function editStudentModal(i) {
+    editingStudentIdx = i;
+    const s = students[i];
+    document.getElementById('student-modal-title').textContent = 'Edit Student';
+    document.getElementById('sm-name').value = s.name;
+    document.getElementById('sm-roll').value = s.rollNo;
+    document.getElementById('sm-rfid').value = s.rfid;
+    document.getElementById('sm-branch').value = s.branch;
+    document.getElementById('sm-sem').value = s.sem;
+    document.getElementById('modal-student').classList.add('open');
+  }
+  function saveStudent() {
+    const s = {
+      name: document.getElementById('sm-name').value,
+      rollNo: document.getElementById('sm-roll').value,
+      rfid: document.getElementById('sm-rfid').value,
+      branch: document.getElementById('sm-branch').value,
+      sem: parseInt(document.getElementById('sm-sem').value),
+      semesterPct: 0, classesAttended: 0, totalClasses: 48,
+      todayStatus: 'Absent', entryTime: '—',
+      subjects: {PHY101:0, MAT201:0, CHE101:0, CS301:0, ENG401:0},
+      id: 'STU' + String(students.length + 1).padStart(3,'0'),
+    };
+    if (!s.name || !s.rollNo) { alert('Name and Roll No required'); return; }
+    if (editingStudentIdx !== null) students[editingStudentIdx] = {...students[editingStudentIdx], ...s};
+    else students.push(s);
+    closeModal('modal-student');
+    renderAdminStudents();
+    populateEditStudents();
+  }
+  function removeStudent(i) {
+    if (confirm(`Remove ${students[i].name}? This will revoke their portal access.`)) {
+      students.splice(i, 1);
+      renderAdminStudents();
+      populateEditStudents();
+    }
+  }
+
+  // CONFIG
+  function saveConfig() {
+    const dur = document.getElementById('input-duration').value;
+    const per = document.getElementById('input-periods').value;
+    const min = document.getElementById('input-min').value;
+    document.getElementById('cfg-duration').textContent = dur;
+    document.getElementById('cfg-periods').textContent = per;
+    document.getElementById('cfg-min').textContent = min + '%';
+    SYSTEM_CONFIG.periodDuration = parseInt(dur);
+    SYSTEM_CONFIG.periodsPerDay = parseInt(per);
+    SYSTEM_CONFIG.minAttendance = parseInt(min);
+    alert('✓ Period settings saved successfully!');
+  }
+  function saveSemDates() {
+    document.getElementById('sem-saved').style.display = 'block';
+    setTimeout(() => document.getElementById('sem-saved').style.display = 'none', 3000);
+  }
+  function overrideAttendance() {
+    const studentSel = document.getElementById('edit-student-sel').value;
+    const subjectSel = document.getElementById('edit-subject-sel').value;
+    const statusSel = document.getElementById('edit-status-sel').value;
+    if(!studentSel || !subjectSel) { alert('Please select student and subject'); return; }
+    document.getElementById('override-success').style.display = 'block';
+    setTimeout(() => document.getElementById('override-success').style.display = 'none', 3000);
+  }
+
+  // SUGGESTIONS
+  function renderAdminSuggestions() {
+    const el = document.getElementById('admin-suggestions-list');
+    if(!SUGGESTIONS.length) {
+      el.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text3)">No suggestions submitted yet from students.</div>';
+      return;
+    }
+    el.innerHTML = SUGGESTIONS.map((s, i) => `
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span style="font-size:0.72rem;font-family:var(--mono);background:var(--accent-glow);color:var(--accent);padding:2px 8px;border-radius:4px">${s.category}</span>
+          <span style="font-size:0.7rem;color:var(--text3)">${s.date.toLocaleDateString()}</span>
+        </div>
+        <div style="font-size:0.88rem;color:var(--text2);line-height:1.5;margin-bottom:8px">${s.text}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:0.75rem;color:var(--text3)">From: ${s.from}</span>
+          <div class="btn-group">
+            <button class="action-btn btn-success" onclick="this.closest('[style]').querySelector('.badge').textContent='Resolved';this.closest('[style]').querySelector('.badge').className='badge badge-present'">Mark Resolved</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  // MODAL HELPERS
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if(e.target === m) m.classList.remove('open'); }));
+
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+  function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Login — AttendRFID</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body class="login-body">
+  <div class="bg-grid"></div>
+  <div class="bg-glow" style="background: radial-gradient(ellipse at center, rgba(79,142,247,0.07) 0%, transparent 70%);"></div>
+
+  <div class="login-wrapper">
+    <a href="index.html" class="login-back">← Back to Portals</a>
+    <div class="login-card">
+      <div class="login-header">
+        <div class="login-role-badge student-badge">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+          Student Portal
+        </div>
+        <h2>Your Attendance<br>Dashboard</h2>
+        <p>View your attendance records across all subjects and semesters</p>
+      </div>
+
+      <div class="form-group">
+        <label>Roll Number</label>
+        <input type="text" class="form-control" id="roll-no" placeholder="e.g. 2024-CS-001" value="2024-CS-001">
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" id="stu-pass" placeholder="Enter password" value="student123">
+      </div>
+
+      <button class="btn btn-student" onclick="studentLogin()">Sign In to Student Portal</button>
+
+      <div class="demo-creds">
+        <p><strong>Demo Credentials</strong><br>
+        Roll: 2024-CS-001 &nbsp;|&nbsp; Pass: student123<br>
+        Roll: 2024-CS-002 &nbsp;|&nbsp; Pass: student123<br>
+        Roll: 2024-CS-004 &nbsp;|&nbsp; Pass: student123 (low attendance demo)</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    function studentLogin() {
+      const roll = document.getElementById('roll-no').value.trim();
+      const pass = document.getElementById('stu-pass').value.trim();
+      const student = ALL_STUDENTS.find(s => s.rollNo === roll);
+      if (student && pass === 'student123') {
+        sessionStorage.setItem('studentID', student.id);
+        sessionStorage.setItem('studentData', JSON.stringify(student));
+        window.location.href = 'student-dashboard.html';
+      } else {
+        alert('Invalid credentials. Please check your Roll Number and password.');
+      }
+    }
+    document.addEventListener('keydown', e => { if(e.key === 'Enter') studentLogin(); });
+  </script>
+</body>
+</html>
