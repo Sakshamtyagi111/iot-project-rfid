@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RFID Attendance System</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body class="landing-body">
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <div class="landing-container">
+    <div class="brand-header">
+      <div class="brand-icon">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+          <rect x="4" y="4" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/>
+          <rect x="22" y="4" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/>
+          <rect x="4" y="22" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/>
+          <circle cx="29" cy="29" r="5" fill="var(--accent)"/>
+          <circle cx="29" cy="29" r="2" fill="var(--bg)"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="brand-name">AttendRFID</h1>
+        <p class="brand-sub">Smart Attendance Management System</p>
+      </div>
+    </div>
+
+    <div class="hero-section">
+      <div class="hero-badge"><span class="pulse-dot"></span> ESP32 · AWS Cloud · Live Sync</div>
+      <h2 class="hero-title">Choose Your<br><span class="gradient-text">Access Portal</span></h2>
+      <p class="hero-desc">Powered by RFID technology — tap to attend, log in to track.</p>
+    </div>
+
+    <div class="portal-cards">
+      <a href="teacher-login.html" class="portal-card teacher-card">
+        <div class="card-glow"></div>
+        <div class="card-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4L28 10V16C28 22.627 22.627 28 16 28C9.373 28 4 22.627 4 16V10L16 4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M12 16L15 19L20 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3>Teacher Portal</h3>
+          <p>View subject attendance, daily records, and student presence by date & time</p>
+          <div class="card-features">
+            <span>Subject-wise data</span>
+            <span>Date filtering</span>
+            <span>Hourly records</span>
+          </div>
+        </div>
+        <div class="card-arrow">→</div>
+      </a>
+
+      <a href="student-login.html" class="portal-card student-card">
+        <div class="card-glow"></div>
+        <div class="card-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="10" r="5" stroke="currentColor" stroke-width="2"/>
+            <path d="M6 26C6 21.582 10.477 18 16 18C21.523 18 26 21.582 26 26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3>Student Portal</h3>
+          <p>Track your daily, monthly & semester attendance with percentage analytics</p>
+          <div class="card-features">
+            <span>Attendance %</span>
+            <span>Semester view</span>
+            <span>Suggestions</span>
+          </div>
+        </div>
+        <div class="card-arrow">→</div>
+      </a>
+
+      <a href="admin-login.html" class="portal-card admin-card">
+        <div class="card-glow"></div>
+        <div class="card-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 4V7M16 25V28M4 16H7M25 16H28M7.515 7.515L9.636 9.636M22.364 22.364L24.485 24.485M7.515 24.485L9.636 22.364M22.364 9.636L24.485 7.515" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="card-content">
+          <h3>Admin Panel</h3>
+          <p>Full system control — edit records, manage users, set periods & configure system</p>
+          <div class="card-features">
+            <span>Full access</span>
+            <span>User mgmt</span>
+            <span>System config</span>
+          </div>
+        </div>
+        <div class="card-arrow">→</div>
+      </a>
+    </div>
+
+    <footer class="landing-footer">
+      <p>RFID ↔ ESP32 ↔ AWS Cloud &nbsp;|&nbsp; Real-time attendance tracking</p>
+    </footer>
+  </div>
+</body>
+</html>

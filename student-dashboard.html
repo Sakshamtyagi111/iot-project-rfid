@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard — AttendRFID</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body class="dashboard nav-student">
+<div class="bg-grid"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-header">
+      <div class="brand-icon">
+        <svg width="22" height="22" viewBox="0 0 40 40" fill="none"><rect x="4" y="4" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/><rect x="22" y="4" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/><rect x="4" y="22" width="14" height="14" rx="2" stroke="var(--accent)" stroke-width="2"/><circle cx="29" cy="29" r="5" fill="var(--accent)"/><circle cx="29" cy="29" r="2" fill="var(--bg)"/></svg>
+      </div>
+      <div><div class="brand-name">AttendRFID</div><div class="brand-sub">STUDENT PORTAL</div></div>
+    </div>
+  </div>
+  <div class="sidebar-user">
+    <div class="user-avatar avatar-student" id="avatarInitials">AM</div>
+    <div class="user-info">
+      <div class="user-name" id="sidebarName">Aarav Mehta</div>
+      <div class="user-role" id="sidebarRoll">2024-CS-001</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">My Attendance</div>
+    <div class="nav-item active" onclick="showPage('overview', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Overview
+    </div>
+    <div class="nav-item" onclick="showPage('today', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      Today's Classes
+    </div>
+    <div class="nav-item" onclick="showPage('monthly', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Monthly View
+    </div>
+    <div class="nav-item" onclick="showPage('semester', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 17v-2m3 2v-4m3 4v-6M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+      Semester Report
+    </div>
+    <div class="nav-section">Feedback</div>
+    <div class="nav-item" onclick="showPage('suggestions', this)">
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      Suggestion Box
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="logout()">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+      Sign Out
+    </button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main-content">
+  <button class="mobile-nav-toggle" onclick="toggleSidebar()">☰ Menu</button>
+
+  <!-- OVERVIEW PAGE -->
+  <div class="page active" id="page-overview">
+    <div class="page-header">
+      <h1>Hello, <span id="studentFirstName">Aarav</span> 👋</h1>
+      <p>Semester 4 · CSE · Roll No: <span id="overviewRoll" style="font-family:var(--mono)">2024-CS-001</span></p>
+    </div>
+
+    <div id="low-attendance-alert" style="display:none" class="alert alert-warning">
+      ⚠️ Your overall attendance is below 75%. Please attend more classes to avoid academic consequences.
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card stat-blue">
+        <div class="stat-label">Today's Classes</div>
+        <div class="stat-value" id="ov-today">4/6</div>
+        <div class="stat-sub">periods attended today</div>
+      </div>
+      <div class="stat-card stat-green">
+        <div class="stat-label">This Month</div>
+        <div class="stat-value" id="ov-month">18</div>
+        <div class="stat-sub">days present</div>
+      </div>
+      <div class="stat-card" id="ov-sem-card">
+        <div class="stat-label">Semester Avg</div>
+        <div class="stat-value" id="ov-sem">87%</div>
+        <div class="stat-sub">across all subjects</div>
+      </div>
+      <div class="stat-card stat-yellow">
+        <div class="stat-label">Classes Attended</div>
+        <div class="stat-value" id="ov-classes">42</div>
+        <div class="stat-sub">out of 48 total</div>
+      </div>
+    </div>
+
+    <!-- Per-subject attendance circles -->
+    <div class="content-card">
+      <div class="card-header"><h3>Subject-wise Semester Attendance</h3></div>
+      <div class="card-body">
+        <div id="subject-circles" style="display:flex;flex-wrap:wrap;gap:20px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TODAY'S CLASSES PAGE -->
+  <div class="page" id="page-today">
+    <div class="page-header">
+      <h1>Today's Classes</h1>
+      <p id="today-date-header">Hourly attendance for today</p>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3>Period-wise Attendance</h3><p>RFID tap recorded automatically</p></div>
+      <div class="card-body">
+        <div class="hourly-grid" id="today-hourly-grid"></div>
+      </div>
+    </div>
+    <div class="content-card" style="margin-top:16px;">
+      <div class="card-header"><h3>Today's Summary</h3></div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>Subject</th><th>Period</th><th>Time</th><th>Status</th><th>RFID Logged</th></tr></thead>
+            <tbody id="today-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONTHLY VIEW PAGE -->
+  <div class="page" id="page-monthly">
+    <div class="page-header">
+      <h1>Monthly Attendance</h1>
+      <p>Day-by-day attendance record for each month</p>
+    </div>
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label>Select Month</label>
+        <select class="filter-control" id="month-select" onchange="renderMonthly()">
+          <option value="1">January 2025</option>
+          <option value="2">February 2025</option>
+          <option value="3">March 2025</option>
+          <option value="4" selected>April 2025</option>
+          <option value="5">May 2025</option>
+        </select>
+      </div>
+    </div>
+    <div class="stats-grid" id="monthly-stats"></div>
+    <div class="content-card">
+      <div class="card-header"><h3 id="monthly-card-title">Monthly Calendar View</h3></div>
+      <div class="card-body">
+        <div id="monthly-calendar"></div>
+      </div>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3>Day-by-Day Records</h3></div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>Date</th><th>Day</th><th>Status</th><th>Classes Attended</th><th>Entry Time</th></tr></thead>
+            <tbody id="monthly-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEMESTER REPORT PAGE -->
+  <div class="page" id="page-semester">
+    <div class="page-header">
+      <h1>Semester Report</h1>
+      <p>Detailed attendance analysis for the current semester</p>
+    </div>
+    <div id="semester-overall" style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;margin-bottom:24px;"></div>
+    <div class="content-card">
+      <div class="card-header"><h3>Subject-wise Breakdown</h3></div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead><tr><th>Subject</th><th>Code</th><th>Classes Attended</th><th>Total Classes</th><th>Attendance %</th><th>Status</th></tr></thead>
+            <tbody id="semester-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3>Attendance Progress</h3></div>
+      <div class="card-body" id="semester-progress"></div>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3>Classes Needed to Reach 75%</h3></div>
+      <div class="card-body">
+        <div id="semester-calc"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUGGESTION BOX PAGE -->
+  <div class="page" id="page-suggestions">
+    <div class="page-header">
+      <h1>Suggestion Box</h1>
+      <p>Share your thoughts, feedback, or concerns with the administration</p>
+    </div>
+    <div class="content-card">
+      <div class="card-header"><h3>Submit a Suggestion</h3><p>Anonymous submissions are allowed</p></div>
+      <div class="card-body">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-input" id="suggest-category">
+            <option value="">Select category...</option>
+            <option>Attendance System Issue</option>
+            <option>Class Schedule</option>
+            <option>Teaching Quality</option>
+            <option>Infrastructure</option>
+            <option>RFID System Problem</option>
+            <option>General Feedback</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top:14px;">
+          <label class="form-label">Subject (optional)</label>
+          <select class="form-input" id="suggest-subject">
+            <option value="">General (not subject-specific)</option>
+            <option>Physics (PHY101)</option>
+            <option>Mathematics (MAT201)</option>
+            <option>Chemistry (CHE101)</option>
+            <option>Computer Science (CS301)</option>
+            <option>English (ENG401)</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-top:14px;">
+          <label class="form-label">Your Message</label>
+          <textarea class="suggestion-textarea" id="suggestion-text" placeholder="Type your suggestion, feedback, or concern here..."></textarea>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:8px;">
+          <label class="toggle-switch">
+            <input type="checkbox" id="anon-toggle">
+            <span class="toggle-slider"></span>
+          </label>
+          <span style="font-size:0.83rem;color:var(--text2)">Submit anonymously</span>
+        </div>
+        <button class="btn-submit" style="margin-top:16px;" onclick="submitSuggestion()">Submit Suggestion</button>
+        <div class="suggestion-success" id="suggest-success">
+          ✅ Your suggestion has been submitted successfully! The admin team will review it.
+        </div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <div class="card-header"><h3>My Past Suggestions</h3></div>
+      <div class="card-body">
+        <div id="past-suggestions">
+          <div style="padding:20px;text-align:center;color:var(--text3);font-size:0.85rem;">No suggestions submitted yet. Use the form above to submit one.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script src="data.js"></script>
+<script>
+  // Auth check
+  let student = JSON.parse(sessionStorage.getItem('studentData') || 'null');
+  if (!student) window.location.href = 'student-login.html';
+
+  // Populate info
+  document.getElementById('sidebarName').textContent = student.name;
+  document.getElementById('sidebarRoll').textContent = student.rollNo;
+  document.getElementById('avatarInitials').textContent = student.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('studentFirstName').textContent = student.name.split(' ')[0];
+  document.getElementById('overviewRoll').textContent = student.rollNo;
+
+  // Overview stats
+  const avgPct = Math.round(Object.values(student.subjects).reduce((a,b)=>a+b,0) / Object.keys(student.subjects).length);
+  document.getElementById('ov-today').textContent = student.todayStatus === 'Present' ? '4/6' : '0/6';
+  document.getElementById('ov-month').textContent = getMonthlyAttendanceSummary(student.id, 4).present;
+  document.getElementById('ov-sem').textContent = avgPct + '%';
+  document.getElementById('ov-classes').textContent = student.classesAttended;
+
+  const semCard = document.getElementById('ov-sem-card');
+  if (avgPct >= 75) { semCard.classList.add('stat-green'); } else { semCard.classList.add('stat-red'); }
+  if (avgPct < 75) document.getElementById('low-attendance-alert').style.display = 'block';
+
+  // Subject circles
+  function renderSubjectCircles() {
+    const container = document.getElementById('subject-circles');
+    const subjectNames = { PHY101:'Physics', MAT201:'Mathematics', CHE101:'Chemistry', CS301:'Comp. Sci', ENG401:'English' };
+    container.innerHTML = '';
+    Object.entries(student.subjects).forEach(([code, pct]) => {
+      const r = 35; const circ = 2 * Math.PI * r;
+      const offset = circ - (pct / 100) * circ;
+      const color = pct >= 75 ? 'var(--green)' : pct >= 60 ? 'var(--yellow)' : 'var(--red)';
+      container.innerHTML += `
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:100px;">
+          <div class="circle-wrap">
+            <svg class="circle-svg" width="90" height="90" viewBox="0 0 90 90">
+              <circle class="circle-track" cx="45" cy="45" r="${r}"/>
+              <circle class="circle-fill" cx="45" cy="45" r="${r}" stroke="${color}"
+                stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+            </svg>
+            <div class="circle-label">
+              <span class="pct" style="color:${color}">${pct}%</span>
+              <span class="pct-sub">attended</span>
+            </div>
+          </div>
+          <div style="text-align:center;">
+            <div style="font-size:0.78rem;font-weight:600">${subjectNames[code]}</div>
+            <div style="font-size:0.65rem;font-family:var(--mono);color:var(--text3)">${code}</div>
+          </div>
+        </div>`;
+    });
+  }
+  renderSubjectCircles();
+
+  // TODAY'S CLASSES
+  function renderToday() {
+    const d = new Date();
+    document.getElementById('today-date-header').textContent = d.toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+    const periods = [
+      {label:'Period 1', time:'8:00–9:00 AM', subject:'Physics'},
+      {label:'Period 2', time:'9:00–10:00 AM', subject:'Mathematics'},
+      {label:'Period 3', time:'10:00–11:00 AM', subject:'Chemistry'},
+      {label:'Period 4', time:'11:00–12:00 PM', subject:'Computer Science'},
+      {label:'Period 5', time:'1:00–2:00 PM', subject:'English'},
+      {label:'Period 6', time:'2:00–3:00 PM', subject:'Physics'},
+    ];
+    const statuses = student.todayStatus === 'Present' ? [true,true,true,true,false,true] : [false,false,false,false,false,false];
+    const grid = document.getElementById('today-hourly-grid');
+    grid.innerHTML = '';
+    periods.forEach((p, i) => {
+      const st = statuses[i];
+      grid.innerHTML += `<div class="hour-block ${st?'present':'absent'}">
+        <div class="hour-label">${p.label}</div>
+        <div class="hour-label" style="margin-bottom:6px">${p.time}</div>
+        <div class="hour-status">${st ? '✓ Present' : '✗ Absent'}</div>
+      </div>`;
+    });
+    const tbody = document.getElementById('today-table-body');
+    tbody.innerHTML = '';
+    periods.forEach((p, i) => {
+      const st = statuses[i];
+      tbody.innerHTML += `<tr>
+        <td>${p.subject}</td>
+        <td style="font-family:var(--mono);font-size:0.8rem">${p.label}</td>
+        <td style="color:var(--text3);font-size:0.8rem">${p.time}</td>
+        <td><span class="badge badge-${st?'present':'absent'}">${st?'Present':'Absent'}</span></td>
+        <td style="font-family:var(--mono);font-size:0.75rem;color:var(--text3)">${st ? student.rfid + ' · ' + p.time.split('–')[0] : '—'}</td>
+      </tr>`;
+    });
+  }
+  renderToday();
+
+  // MONTHLY VIEW
+  function renderMonthly() {
+    const month = parseInt(document.getElementById('month-select').value);
+    const days = getDailyAttendanceForStudent(student.id, month);
+    const summary = getMonthlyAttendanceSummary(student.id, month);
+    const monthName = new Date(2025, month-1, 1).toLocaleString('en-IN', {month:'long'});
+    document.getElementById('monthly-card-title').textContent = monthName + ' 2025 · Attendance Calendar';
+
+    const statsEl = document.getElementById('monthly-stats');
+    statsEl.innerHTML = `
+      <div class="stat-card stat-green"><div class="stat-label">Days Present</div><div class="stat-value">${summary.present}</div><div class="stat-sub">working days</div></div>
+      <div class="stat-card stat-red"><div class="stat-label">Days Absent</div><div class="stat-value">${summary.absent}</div><div class="stat-sub">missed</div></div>
+      <div class="stat-card ${summary.pct>=75?'stat-green':'stat-red'}"><div class="stat-label">Monthly %</div><div class="stat-value">${summary.pct}%</div><div class="stat-sub">this month</div></div>
+      <div class="stat-card stat-blue"><div class="stat-label">Working Days</div><div class="stat-value">${summary.total}</div><div class="stat-sub">this month</div></div>
+    `;
+
+    // Calendar
+    const cal = document.getElementById('monthly-calendar');
+    const firstDay = new Date(2025, month-1, 1).getDay();
+    const daysInMonth = new Date(2025, month, 0).getDate();
+    let html = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:8px;">';
+    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
+      html += `<div style="text-align:center;font-size:0.68rem;font-family:var(--mono);color:var(--text3);padding:4px">${d}</div>`;
+    });
+    html += '</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">';
+    for(let i=0;i<firstDay;i++) html += '<div></div>';
+    for(let d=1;d<=daysInMonth;d++) {
+      const date = new Date(2025, month-1, d);
+      const isWeekend = date.getDay()===0 || date.getDay()===6;
+      const dayRecord = days.find(r => r.date.getDate()===d);
+      let bg = 'var(--bg3)'; let color = 'var(--text3)'; let border = 'var(--border)';
+      if(isWeekend) { bg='transparent'; color='var(--border2)'; }
+      else if(dayRecord?.status==='Present') { bg='var(--green-glow)'; color='var(--green)'; border='rgba(34,197,94,0.3)'; }
+      else if(dayRecord?.status==='Absent') { bg='var(--red-glow)'; color='var(--red)'; border='rgba(239,68,68,0.2)'; }
+      html += `<div style="text-align:center;padding:8px 4px;border-radius:8px;border:1px solid ${border};background:${bg};font-size:0.78rem;font-weight:${dayRecord?'600':'400'};color:${color}">${d}</div>`;
+    }
+    html += '</div>';
+    cal.innerHTML = html;
+
+    // Table
+    const tbody = document.getElementById('monthly-tbody');
+    tbody.innerHTML = '';
+    if(!days.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text3);padding:24px">No working days in this month</td></tr>'; return; }
+    days.forEach(rec => {
+      const st = rec.status;
+      tbody.innerHTML += `<tr>
+        <td>${rec.date.toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</td>
+        <td style="color:var(--text3)">${rec.date.toLocaleDateString('en-IN',{weekday:'short'})}</td>
+        <td><span class="badge badge-${st.toLowerCase()}">${st}</span></td>
+        <td style="font-family:var(--mono)">${st==='Present' ? Math.floor(Math.random()*3)+4 + '/6' : '0/6'}</td>
+        <td style="font-family:var(--mono);font-size:0.8rem;color:var(--text3)">${st==='Present' ? '0' + (Math.floor(Math.random()*2)+8) + ':' + Math.floor(Math.random()*30).toString().padStart(2,'0') : '—'}</td>
+      </tr>`;
+    });
+  }
+  renderMonthly();
+
+  // SEMESTER REPORT
+  function renderSemester() {
+    const subjectNames = { PHY101:'Physics', MAT201:'Mathematics', CHE101:'Chemistry', CS301:'Computer Science', ENG401:'English' };
+    const avgPct2 = Math.round(Object.values(student.subjects).reduce((a,b)=>a+b,0) / Object.keys(student.subjects).length);
+    const r = 55; const circ = 2 * Math.PI * r;
+    const offset = circ - (avgPct2 / 100) * circ;
+    const color = avgPct2 >= 75 ? 'var(--green)' : avgPct2 >= 60 ? 'var(--yellow)' : 'var(--red)';
+    document.getElementById('semester-overall').innerHTML = `
+      <div class="content-card" style="flex:1;min-width:220px;">
+        <div class="card-body" style="display:flex;align-items:center;gap:20px;">
+          <div class="circle-wrap" style="width:130px;height:130px;flex-shrink:0">
+            <svg class="circle-svg" width="130" height="130" viewBox="0 0 130 130">
+              <circle class="circle-track" cx="65" cy="65" r="${r}"/>
+              <circle class="circle-fill" cx="65" cy="65" r="${r}" stroke="${color}" stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+            </svg>
+            <div class="circle-label"><span class="pct" style="font-size:1.6rem;color:${color}">${avgPct2}%</span><span class="pct-sub">overall</span></div>
+          </div>
+          <div>
+            <div style="font-size:0.75rem;color:var(--text3);margin-bottom:4px;font-family:var(--mono)">SEMESTER AVERAGE</div>
+            <div style="font-size:1.3rem;font-weight:700;color:${color}">${avgPct2 >= 75 ? 'Good Standing' : avgPct2 >= 60 ? 'At Risk' : 'Critical'}</div>
+            <div style="font-size:0.82rem;color:var(--text2);margin-top:4px">${student.classesAttended} of ${student.totalClasses} classes attended</div>
+            <div style="font-size:0.75rem;color:var(--text3);margin-top:8px">Semester 4 · Jan–May 2025</div>
+          </div>
+        </div>
+      </div>`;
+
+    const tbody = document.getElementById('semester-tbody');
+    tbody.innerHTML = '';
+    const progress = document.getElementById('semester-progress');
+    progress.innerHTML = '';
+    const calc = document.getElementById('semester-calc');
+    calc.innerHTML = '';
+
+    Object.entries(student.subjects).forEach(([code, pct]) => {
+      const attended = Math.round(pct * 48 / 100);
+      const status = pct >= 75 ? 'Good' : pct >= 60 ? 'At Risk' : 'Critical';
+      const bc = pct >= 75 ? 'present' : pct >= 60 ? 'late' : 'absent';
+      tbody.innerHTML += `<tr>
+        <td>${subjectNames[code]}</td>
+        <td style="font-family:var(--mono);font-size:0.78rem;color:var(--text3)">${code}</td>
+        <td style="font-family:var(--mono)">${attended}</td>
+        <td style="font-family:var(--mono)">48</td>
+        <td><div style="display:flex;align-items:center;gap:8px;"><div class="progress-wrap" style="flex:1;max-width:80px;"><div class="progress-bar ${pct>=75?'progress-green':pct>=60?'progress-yellow':'progress-red'}" style="width:${pct}%"></div></div><span style="font-family:var(--mono);font-size:0.82rem;color:${pct>=75?'var(--green)':pct>=60?'var(--yellow)':'var(--red)'}">${pct}%</span></div></td>
+        <td><span class="badge badge-${bc}">${status}</span></td>
+      </tr>`;
+
+      progress.innerHTML += `<div style="margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:0.82rem;">
+          <span>${subjectNames[code]} <span style="color:var(--text3);font-family:var(--mono);font-size:0.72rem">(${code})</span></span>
+          <span style="font-family:var(--mono);color:${pct>=75?'var(--green)':pct>=60?'var(--yellow)':'var(--red)'}">${pct}%</span>
+        </div>
+        <div class="progress-wrap"><div class="progress-bar ${pct>=75?'progress-green':pct>=60?'progress-yellow':'progress-red'}" style="width:${pct}%"></div></div>
+      </div>`;
+
+      if(pct < 75) {
+        const needed = Math.ceil((0.75 * 48 - attended) / 0.25);
+        calc.innerHTML += `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+          <div><div style="font-size:0.85rem;font-weight:600">${subjectNames[code]}</div><div style="font-size:0.75rem;color:var(--text3);margin-top:2px">Currently at ${pct}% — need 75%</div></div>
+          <div style="text-align:right"><div style="font-size:1.2rem;font-weight:700;color:var(--yellow)">${Math.max(0,needed)}</div><div style="font-size:0.7rem;color:var(--text3)">more classes needed</div></div>
+        </div>`;
+      }
+    });
+    if(!calc.innerHTML) calc.innerHTML = `<div style="padding:16px;text-align:center;color:var(--green);font-size:0.9rem;">✓ All subjects are above 75% — you're in good standing!</div>`;
+  }
+
+  // SUGGESTION BOX
+  const mySuggestions = [];
+  function submitSuggestion() {
+    const text = document.getElementById('suggestion-text').value.trim();
+    const cat = document.getElementById('suggest-category').value;
+    const anon = document.getElementById('anon-toggle').checked;
+    if(!text) { alert('Please write your suggestion first.'); return; }
+    if(!cat) { alert('Please select a category.'); return; }
+    mySuggestions.unshift({ category: cat, text, anon, date: new Date(), status: 'Pending' });
+    SUGGESTIONS.push({ from: anon ? 'Anonymous' : student.name, category: cat, text, date: new Date() });
+    document.getElementById('suggestion-text').value = '';
+    document.getElementById('suggest-success').style.display = 'block';
+    setTimeout(() => document.getElementById('suggest-success').style.display = 'none', 4000);
+    renderPastSuggestions();
+  }
+
+  function renderPastSuggestions() {
+    const el = document.getElementById('past-suggestions');
+    if(!mySuggestions.length) { el.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text3);font-size:0.85rem;">No suggestions submitted yet.</div>'; return; }
+    el.innerHTML = mySuggestions.map(s => `
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <span style="font-size:0.72rem;font-family:var(--mono);background:var(--accent-glow);color:var(--accent);padding:2px 8px;border-radius:4px">${s.category}</span>
+          <span style="font-size:0.7rem;color:var(--text3)">${s.date.toLocaleDateString()}</span>
+        </div>
+        <div style="font-size:0.85rem;color:var(--text2);line-height:1.5">${s.text}</div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;">
+          <span style="font-size:0.7rem;color:var(--text3)">${s.anon ? '🔒 Anonymous' : '👤 ' + student.name}</span>
+          <span class="badge badge-late">${s.status}</span>
+        </div>
+      </div>`).join('');
+  }
+
+  function showPage(name, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    el.classList.add('active');
+    if(name === 'semester') renderSemester();
+    if(name === 'monthly') renderMonthly();
+  }
+
+  function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+  function logout() { sessionStorage.clear(); window.location.href = 'index.html'; }
+</script>
+</body>
+</html>
